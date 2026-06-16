@@ -27,7 +27,7 @@ export function Nav() {
             Status
           </Link>
           <Link
-            href="https://github.com"
+            href="https://github.com/FadedCantCode/Fabrica-RUNE"
             className="inline-flex h-9 items-center rounded-[var(--radius-base)] border border-[var(--color-border-strong)] px-4 text-sm font-medium text-[var(--color-ink)] transition-colors hover:border-[var(--color-accent)] hover:bg-[var(--color-accent-soft)]"
           >
             GitHub
