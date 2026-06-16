@@ -1,0 +1,61 @@
+@import "tailwindcss";
+
+@theme {
+  /* Page theme lock: dark, technical, documentation-grade. */
+  --color-bg: #0a0c0f;
+  --color-bg-raised: #11141a;
+  --color-bg-raised-2: #161a21;
+  --color-border: #232831;
+  --color-border-strong: #323a47;
+
+  --color-ink: #e8eaed;
+  --color-ink-muted: #9aa3b2;
+  --color-ink-faint: #5f6877;
+
+  /* Single accent: electric blue, desaturated enough to avoid AI-purple glow */
+  --color-accent: #4f8cff;
+  --color-accent-dim: #3a6acc;
+  --color-accent-soft: rgb(79 140 255 / 0.12);
+
+  --color-risk-high: #ef6f6f;
+  --color-risk-medium: #e0b550;
+  --color-risk-low: #5fc88f;
+
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, "SF Mono", monospace;
+
+  --radius-base: 10px;
+}
+
+html {
+  color-scheme: dark;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+}
+
+/* Shared shape system: one corner-radius scale for the entire page (soft, 10px base) */
+.surface {
+  border-radius: var(--radius-base);
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-raised);
+}
+
+.font-mono-tight {
+  font-family: var(--font-mono);
+  letter-spacing: -0.01em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
