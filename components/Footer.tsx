@@ -13,7 +13,7 @@ export function Footer() {
         </div>
 
         <Link
-          href="https://github.com"
+          href="https://github.com/FadedCantCode/Fabrica-RUNE"
           className="inline-flex h-10 items-center gap-2 rounded-[var(--radius-base)] border border-[var(--color-border-strong)] px-4 text-sm text-[var(--color-ink)] transition-colors hover:border-[var(--color-accent)] hover:bg-[var(--color-accent-soft)]"
         >
           <GithubLogo size={16} />
