@@ -21,7 +21,7 @@ export function Hero() {
 
           <div className="mt-9 flex flex-wrap items-center gap-3">
             <Link
-              href="https://github.com"
+              href="https://github.com/FadedCantCode/Fabrica-RUNE"
               className="inline-flex h-11 items-center gap-2 rounded-[var(--radius-base)] bg-[var(--color-accent)] px-5 text-sm font-medium text-[#0a0c0f] transition-transform active:scale-[0.98]"
             >
               View on GitHub
