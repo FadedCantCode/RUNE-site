@@ -3,9 +3,9 @@
 import { motion, useReducedMotion } from "motion/react";
 
 const rows = [
-  { step: "search", predicted: 0.388, measured: 0.743 },
-  { step: "analyze", predicted: 0.58, measured: 0.799 },
-  { step: "summarize", predicted: 0.23, measured: 0.76 },
+  { step: "search", predicted: 0.388, measured: 0.892 },
+  { step: "analyze", predicted: 0.58, measured: 0.906 },
+  { step: "summarize", predicted: 0.23, measured: 0.873 },
 ];
 
 export function CorrelationExample() {
@@ -20,17 +20,18 @@ export function CorrelationExample() {
               What validating the linter looks like
             </h2>
             <p className="mt-4 text-sm leading-relaxed text-[var(--color-ink-muted)]">
-              First real run, 2026-06-16: the research genome against 12
-              tasks, comparing two model sizes on the same provider (Groq
-              8B vs Groq 70B) while other free-tier backends were
-              quota-blocked. Predicted risk and measured divergence
-              correlated at 0.719 &mdash; a positive signal, not proof.
+              Second real run, 2026-06-16: the research genome against 12
+              tasks, comparing Llama (on Groq) against gpt-oss-120b (on
+              Cerebras) &mdash; two different labs&apos; models on two
+              different hardware stacks. Predicted risk and measured
+              divergence correlated at 0.99.
             </p>
             <p className="mt-4 text-xs text-[var(--color-ink-faint)]">
-              This is a same-provider, different-model-size comparison, not
-              the cross-provider comparison this project is actually trying
-              to validate. See docs/roadmap.md for the full caveat and the
-              pending cross-provider run.
+              Cerebras was rate-limited throughout this run (every task
+              hit at least one 429 before succeeding), so some divergence
+              may reflect request throttling, not just model behavior. An
+              earlier same-day run (Groq 8B vs Groq 70B, same provider)
+              scored 0.719. See docs/roadmap.md for both results in full.
             </p>
           </div>
 
@@ -48,12 +49,13 @@ export function CorrelationExample() {
 
               <div className="border-t border-[var(--color-border)] px-5 py-4">
                 <p className="font-mono-tight text-sm text-[var(--color-ink)]">
-                  correlation = 0.719
+                  correlation = 0.99
                 </p>
                 <p className="mt-1 text-xs text-[var(--color-ink-faint)]">
-                  Same-provider, different model size (Groq 8B vs 70B), 12
-                  tasks. A real cross-provider run is still pending &mdash;
-                  treat this as an early, narrower data point.
+                  Groq (Llama) vs Cerebras (gpt-oss-120b), 12 tasks, under
+                  rate-limit pressure on the Cerebras side. A second,
+                  same-provider run (Groq 8B vs 70B) separately scored
+                  0.719 &mdash; two early positive signals, not yet proof.
                 </p>
               </div>
             </div>
