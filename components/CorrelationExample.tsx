@@ -3,9 +3,9 @@
 import { motion, useReducedMotion } from "motion/react";
 
 const rows = [
-  { step: "search", predicted: 0.388, measured: 0.892 },
-  { step: "analyze", predicted: 0.58, measured: 0.906 },
-  { step: "summarize", predicted: 0.23, measured: 0.873 },
+  { step: "search", predicted: 0.388, measured: 0.823 },
+  { step: "analyze", predicted: 0.58, measured: 0.853 },
+  { step: "summarize", predicted: 0.23, measured: 0.802 },
 ];
 
 export function CorrelationExample() {
@@ -20,18 +20,20 @@ export function CorrelationExample() {
               What validating the linter looks like
             </h2>
             <p className="mt-4 text-sm leading-relaxed text-[var(--color-ink-muted)]">
-              Second real run, 2026-06-16: the research genome against 12
-              tasks, comparing Llama (on Groq) against gpt-oss-120b (on
-              Cerebras) &mdash; two different labs&apos; models on two
-              different hardware stacks. Predicted risk and measured
-              divergence correlated at 0.99.
+              Cleanest run yet, 2026-06-17: the research genome against 12
+              tasks, comparing Qwen3-32B (on Groq) against Mistral Small
+              (on Mistral AI&apos;s own infrastructure) &mdash; two
+              different labs, two different cloud providers, zero
+              retries or rate-limit interference. Predicted risk and
+              measured divergence correlated at 0.999.
             </p>
             <p className="mt-4 text-xs text-[var(--color-ink-faint)]">
-              Cerebras was rate-limited throughout this run (every task
-              hit at least one 429 before succeeding), so some divergence
-              may reflect request throttling, not just model behavior. An
-              earlier same-day run (Groq 8B vs Groq 70B, same provider)
-              scored 0.719. See docs/roadmap.md for both results in full.
+              Two earlier same-day runs also scored positive: 0.99
+              (Groq vs Cerebras, though Cerebras was rate-limited
+              throughout) and 0.719 (Groq 8B vs Groq 70B, same
+              provider). This is the first run where nothing about the
+              infrastructure casts doubt on the result. See
+              docs/roadmap.md for all three in full.
             </p>
           </div>
 
@@ -49,13 +51,13 @@ export function CorrelationExample() {
 
               <div className="border-t border-[var(--color-border)] px-5 py-4">
                 <p className="font-mono-tight text-sm text-[var(--color-ink)]">
-                  correlation = 0.99
+                  correlation = 0.999
                 </p>
                 <p className="mt-1 text-xs text-[var(--color-ink-faint)]">
-                  Groq (Llama) vs Cerebras (gpt-oss-120b), 12 tasks, under
-                  rate-limit pressure on the Cerebras side. A second,
-                  same-provider run (Groq 8B vs 70B) separately scored
-                  0.719 &mdash; two early positive signals, not yet proof.
+                  Qwen3-32B (Groq) vs Mistral Small (Mistral AI), 12 tasks,
+                  zero rate-limit interference. Two earlier same-day runs
+                  separately scored 0.99 and 0.719 &mdash; three positive
+                  signals across three different pairings.
                 </p>
               </div>
             </div>
