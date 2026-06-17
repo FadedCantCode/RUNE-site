@@ -27,7 +27,7 @@ export function Hero() {
 
         <h1 className="max-w-3xl text-4xl font-medium tracking-tighter text-[var(--color-ink)] md:text-5xl lg:text-[64px]">
           <span className="block">
-            Find out which parts of your agent break across models,
+            Find out which parts of your agent break across models.
           </span>
           <motion.span
             className="block text-[var(--color-ink-muted)]"
