@@ -1,48 +1,59 @@
 @import "tailwindcss";
 
 /* =========================================================================
-   RUNE site, design tokens
-   Source language: Bizar Ro (opendesign.cc/packs/bizar-ro). Stark
-   monochrome, sharp corners, no shadows, hairline borders, 8px grid.
-   Token system only. No brand assets or copy carried over from the source
-   pack.
+   RUNE site, design tokens (v2)
+   Source language: playful collectible-product studio aesthetic (warm
+   cream background, pixel display type, pastel pill chips), inspired by
+   Toy Fight's studio site. Replaces the prior Bizar Ro monochrome system
+   site-wide.
 
-   ONE deliberate exception to the monochrome rule: the predicted-vs-
-   measured divergence bars in the correlation tables. That is the single
-   semantic-color use on the entire page. Risk severity (the old
-   high/medium/low traffic-light scale) does NOT get its own color scale.
-   It reads through icon shape and a single muted/ink contrast, the same
-   way every other piece of UI on this page does. There is exactly one
-   accent color, used in exactly one place.
+   ONE rule carried over unchanged from the prior system: the predicted-vs-
+   measured divergence bars are the only place color carries MEANING
+   (correlation data). Every other color on the page, including the pastel
+   pills, is decorative, applied to headline/label text and chip
+   backgrounds, never to data.
    ========================================================================= */
 
 @theme {
-  --color-bg: #000000;
-  --color-bg-raised: #0a0a0a;
-  --color-bg-raised-2: #141414;
+  --color-bg: #f5f1e6;
+  --color-bg-raised: #fbf8f0;
+  --color-bg-raised-2: #efe9d8;
 
-  --color-ink: #ffffff;
-  --color-ink-muted: rgba(255, 255, 255, 0.72);
-  --color-ink-faint: rgba(255, 255, 255, 0.48);
+  --color-ink: #18140f;
+  --color-ink-muted: rgba(24, 20, 15, 0.68);
+  --color-ink-faint: rgba(24, 20, 15, 0.42);
 
-  --color-border: rgba(255, 255, 255, 0.1);
-  --color-border-strong: rgba(255, 255, 255, 0.24);
+  --color-border: rgba(24, 20, 15, 0.12);
+  --color-border-strong: rgba(24, 20, 15, 0.28);
 
-  /* The one accent on the entire page. Used ONLY for the measured-
-     divergence bar/value in correlation comparisons. Never for buttons,
-     links, hover states, icons, or decoration. */
-  --color-predicted: #ffffff;
-  --color-measured: #ff5a36;
+  /* Decorative pill palette. Pastel, used freely on headline/label chips.
+     Never used for data, never used for the divergence bars below. */
+  --color-pill-lavender: #ddd6f5;
+  --color-pill-pink: #f6cfe8;
+  --color-pill-yellow: #f5e08a;
+  --color-pill-gray: #e7e2d3;
+  --color-pill-ink: #18140f;
 
-  --font-sans: "Geist", var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
-  --font-mono: "Geist Mono", var(--font-geist-mono), ui-monospace, "SF Mono", monospace;
+  /* The one semantic-color use on the page: predicted vs measured
+     divergence in the correlation tables. Unchanged in spirit from the
+     prior system, just re-tuned to sit well on a warm background. */
+  --color-predicted: #18140f;
+  --color-measured: #e8552f;
 
-  --radius-base: 0px;
+  /* Glow accent, used only by the hero's rune-block object. */
+  --color-glow: #b48cf2;
+
+  --font-display: var(--font-pixelify-sans), var(--font-geist-sans), monospace;
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, "SF Mono", monospace;
+
+  --radius-base: 12px;
+  --radius-lg: 20px;
   --radius-pill: 999px;
 }
 
 html {
-  color-scheme: dark;
+  color-scheme: light;
 }
 
 body {
@@ -51,11 +62,9 @@ body {
   font-family: var(--font-sans);
 }
 
-/* Shared surface: hairline border, no shadow, sharp corners. */
-.surface {
-  border-radius: var(--radius-base);
-  border: 1px solid var(--color-border);
-  background: var(--color-bg-raised);
+.font-display {
+  font-family: var(--font-display);
+  letter-spacing: 0.01em;
 }
 
 .font-mono-tight {
@@ -63,18 +72,32 @@ body {
   letter-spacing: -0.01em;
 }
 
-/* Pill is the one place rounding is allowed, reserved for actual
-   pill-shaped controls (the eyebrow badge), not a general radius. */
+/* Shared surface: soft card, no hard edges, no stark borders. */
+.surface {
+  border-radius: var(--radius-base);
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-raised);
+}
+
+/* Pill chip, the page's recurring decorative device. Background is set
+   per-instance via inline style or a pill-{color} modifier class. */
 .pill {
   border-radius: var(--radius-pill);
+  display: inline-flex;
+  align-items: center;
 }
+
+.pill-lavender { background: var(--color-pill-lavender); }
+.pill-pink { background: var(--color-pill-pink); }
+.pill-yellow { background: var(--color-pill-yellow); }
+.pill-gray { background: var(--color-pill-gray); }
 
 /* Typography utilities used by CorrelationExample's data-table layout. */
 .text-heading {
   font-size: 1.875rem;
   line-height: 1.1;
   font-weight: 500;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.01em;
 }
 
 .text-subheading {
@@ -95,7 +118,7 @@ body {
   text-transform: uppercase;
 }
 
-/* Divergence bar comparison, the one scoped color exception on the page. */
+/* Divergence bar comparison, the one scoped color-as-data exception. */
 .bar-predicted {
   background: var(--color-predicted);
 }
