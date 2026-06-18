@@ -1,30 +1,44 @@
 @import "tailwindcss";
 
+/* =========================================================================
+   RUNE site, design tokens
+   Source language: Bizar Ro (opendesign.cc/packs/bizar-ro). Stark
+   monochrome, sharp corners, no shadows, hairline borders, 8px grid.
+   Token system only. No brand assets or copy carried over from the source
+   pack.
+
+   ONE deliberate exception to the monochrome rule: the predicted-vs-
+   measured divergence bars in the correlation tables. That is the single
+   semantic-color use on the entire page. Risk severity (the old
+   high/medium/low traffic-light scale) does NOT get its own color scale.
+   It reads through icon shape and a single muted/ink contrast, the same
+   way every other piece of UI on this page does. There is exactly one
+   accent color, used in exactly one place.
+   ========================================================================= */
+
 @theme {
-  /* Page theme lock: dark, technical, documentation-grade. */
-  --color-bg: #0a0c0f;
-  --color-bg-raised: #11141a;
-  --color-bg-raised-2: #161a21;
-  --color-border: #232831;
-  --color-border-strong: #323a47;
+  --color-bg: #000000;
+  --color-bg-raised: #0a0a0a;
+  --color-bg-raised-2: #141414;
 
-  --color-ink: #e8eaed;
-  --color-ink-muted: #9aa3b2;
-  --color-ink-faint: #5f6877;
+  --color-ink: #ffffff;
+  --color-ink-muted: rgba(255, 255, 255, 0.72);
+  --color-ink-faint: rgba(255, 255, 255, 0.48);
 
-  /* Single accent: electric blue, desaturated enough to avoid AI-purple glow */
-  --color-accent: #4f8cff;
-  --color-accent-dim: #3a6acc;
-  --color-accent-soft: rgb(79 140 255 / 0.12);
+  --color-border: rgba(255, 255, 255, 0.1);
+  --color-border-strong: rgba(255, 255, 255, 0.24);
 
-  --color-risk-high: #ef6f6f;
-  --color-risk-medium: #e0b550;
-  --color-risk-low: #5fc88f;
+  /* The one accent on the entire page. Used ONLY for the measured-
+     divergence bar/value in correlation comparisons. Never for buttons,
+     links, hover states, icons, or decoration. */
+  --color-predicted: #ffffff;
+  --color-measured: #ff5a36;
 
-  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
-  --font-mono: var(--font-geist-mono), ui-monospace, "SF Mono", monospace;
+  --font-sans: "Geist", var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Geist Mono", var(--font-geist-mono), ui-monospace, "SF Mono", monospace;
 
-  --radius-base: 10px;
+  --radius-base: 0px;
+  --radius-pill: 999px;
 }
 
 html {
@@ -37,7 +51,7 @@ body {
   font-family: var(--font-sans);
 }
 
-/* Shared shape system: one corner-radius scale for the entire page (soft, 10px base) */
+/* Shared surface: hairline border, no shadow, sharp corners. */
 .surface {
   border-radius: var(--radius-base);
   border: 1px solid var(--color-border);
@@ -49,13 +63,54 @@ body {
   letter-spacing: -0.01em;
 }
 
+/* Pill is the one place rounding is allowed, reserved for actual
+   pill-shaped controls (the eyebrow badge), not a general radius. */
+.pill {
+  border-radius: var(--radius-pill);
+}
+
+/* Typography utilities used by CorrelationExample's data-table layout. */
+.text-heading {
+  font-size: 1.875rem;
+  line-height: 1.1;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+
+.text-subheading {
+  font-size: 1.25rem;
+  line-height: 1.3;
+  font-weight: 500;
+}
+
+.text-body {
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.text-caption {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* Divergence bar comparison, the one scoped color exception on the page. */
+.bar-predicted {
+  background: var(--color-predicted);
+}
+
+.bar-measured {
+  background: var(--color-measured);
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
   *::after {
-    animation-duration: 0.001ms !important;
+    animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
-    transition-duration: 0.001ms !important;
+    transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
 }
