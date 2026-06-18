@@ -30,13 +30,19 @@ const items = [
   },
 ];
 
+const STATE_PILL: Record<typeof items[number]["state"], "pill-lavender" | "pill-yellow" | "pill-gray"> = {
+  done: "pill-lavender",
+  open: "pill-yellow",
+  "not-started": "pill-gray",
+};
+
 export function Status() {
   return (
     <section id="status" className="border-b border-[var(--color-border)] py-20 md:py-28">
       <div className="mx-auto max-w-[1400px] px-6">
         <div className="grid grid-cols-1 gap-12 md:grid-cols-12">
           <div className="md:col-span-4">
-            <h2 className="text-3xl font-medium tracking-tight text-[var(--color-ink)]">
+            <h2 className="font-display text-3xl text-[var(--color-ink)]">
               What actually works right now
             </h2>
             <p className="mt-4 text-sm leading-relaxed text-[var(--color-ink-muted)]">
@@ -53,7 +59,7 @@ export function Status() {
                   key={item.title}
                   className="surface flex gap-4 p-5"
                 >
-                  <StatusIcon state={item.state} />
+                  <StatusIcon state={item.state} pillColor={STATE_PILL[item.state]} />
                   <div>
                     <h3 className="text-[15px] font-medium text-[var(--color-ink)]">
                       {item.title}
@@ -72,32 +78,30 @@ export function Status() {
   );
 }
 
-// Status reads through icon shape and ink contrast, the same monochrome
-// rule applied everywhere else on the page. No separate red/amber/green
-// severity scale.
-function StatusIcon({ state }: { state: "done" | "open" | "not-started" }) {
-  if (state === "done") {
-    return (
-      <CheckCircle
-        size={20}
-        weight="fill"
-        className="mt-0.5 shrink-0 text-[var(--color-ink)]"
-      />
+// Status reads through icon shape inside a decorative pastel pill, the
+// same device used for the icon badges in HowItWorks, never a literal
+// red/amber/green severity scale.
+function StatusIcon({
+  state,
+  pillColor,
+}: {
+  state: "done" | "open" | "not-started";
+  pillColor: "pill-lavender" | "pill-yellow" | "pill-gray";
+}) {
+  const icon =
+    state === "done" ? (
+      <CheckCircle size={16} weight="fill" />
+    ) : state === "open" ? (
+      <Warning size={16} weight="fill" />
+    ) : (
+      <Circle size={16} />
     );
-  }
-  if (state === "open") {
-    return (
-      <Warning
-        size={20}
-        weight="fill"
-        className="mt-0.5 shrink-0 text-[var(--color-ink-muted)]"
-      />
-    );
-  }
+
   return (
-    <Circle
-      size={20}
-      className="mt-0.5 shrink-0 text-[var(--color-ink-faint)]"
-    />
+    <span
+      className={`pill ${pillColor} mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center text-[var(--color-ink)]`}
+    >
+      {icon}
+    </span>
   );
 }
