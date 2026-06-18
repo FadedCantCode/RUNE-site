@@ -11,7 +11,7 @@ export function Hero() {
     <section className="relative overflow-hidden">
       <div className="mx-auto max-w-[1400px] px-6 pt-16 pb-8 md:pt-20">
         <div className="pill mb-8 inline-flex border border-[var(--color-border-strong)] bg-[var(--color-bg-raised)] px-3 py-1 font-mono-tight text-xs uppercase tracking-wide text-[var(--color-ink-muted)]">
-          Open source, unvalidated by design
+          Open source.
         </div>
 
         {/* Headline built from alternating plain-text and pill-chip words,
