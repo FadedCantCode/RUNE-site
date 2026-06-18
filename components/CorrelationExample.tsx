@@ -1,6 +1,7 @@
 "use client";
 
 import { motion, useReducedMotion } from "motion/react";
+import LogoLoop from "./LogoLoop"; // React Bits component, see LogoLoop.jsx for the source
 
 const researchRows = [
   { step: "search", predicted: 0.388, measured: 0.823 },
@@ -15,17 +16,10 @@ const coderRows = [
   { step: "code", predicted: 0.395, measured: 0.113 },
 ];
 
-// coder.rune's predicted (0.4–0.6) and measured (0.11–0.19) values sit on very
-// different absolute scales — semantic-similarity divergence scores run much
-// lower than the structural risk heuristic's 0–1 range. What the correlation
-// (0.967) actually validates is the RANKING matching between the two series,
-// not their absolute magnitudes. Rendering both on a shared 0–100% bar width
-// would visually misrepresent a strong result as weak (all "measured" bars
-// would look short relative to "predicted" ones for a reason that has nothing
-// to do with how good the result is). Normalize each series independently to
-// its own min–max range for bar width, while keeping the displayed numeric
-// labels as the real raw values — this keeps the visual honest about what's
-// actually being claimed.
+// coder.rune's predicted (0.4 to 0.6) and measured (0.11 to 0.19) values sit
+// on different absolute scales. See prior reasoning in this file's history.
+// Each series is normalized independently to its own min-max range for bar
+// width, while displayed numeric labels stay as the real raw values.
 function normalizeSeries(rows: typeof coderRows, key: "predicted" | "measured") {
   const values = rows.map((r) => r[key]);
   const min = Math.min(...values);
@@ -34,51 +28,108 @@ function normalizeSeries(rows: typeof coderRows, key: "predicted" | "measured") 
   return rows.map((r) => (r[key] - min) / range);
 }
 
+// Backends actually integrated and verified in this project. Rendered as
+// plain text wordmarks here as a placeholder. Per the design system's own
+// checklist, a real logo wall should use actual SVG marks (Simple Icons or
+// each provider's own brand asset), not text standing in for a logo. Swap
+// these for real <img>/SVG entries before treating this as a finished wall.
+const integratedBackends = [
+  { node: <span className="text-body" style={{ letterSpacing: "0.05em" }}>GROQ</span> },
+  { node: <span className="text-body" style={{ letterSpacing: "0.05em" }}>CEREBRAS</span> },
+  { node: <span className="text-body" style={{ letterSpacing: "0.05em" }}>MISTRAL AI</span> },
+  { node: <span className="text-body" style={{ letterSpacing: "0.05em" }}>OPENAI</span> },
+  { node: <span className="text-body" style={{ letterSpacing: "0.05em" }}>ANTHROPIC</span> },
+  { node: <span className="text-body" style={{ letterSpacing: "0.05em" }}>GOOGLE</span> },
+  { node: <span className="text-body" style={{ letterSpacing: "0.05em" }}>DEEPSEEK</span> },
+  { node: <span className="text-body" style={{ letterSpacing: "0.05em" }}>NVIDIA NIM</span> },
+];
+
 export function CorrelationExample() {
   const reduce = useReducedMotion();
 
   return (
-    <section className="border-b border-[var(--color-border)] py-20 md:py-28">
-      <div className="mx-auto max-w-[1400px] px-6">
+    <section
+      style={{
+        background: "var(--color-bg)",
+        borderBottom: "1px solid var(--color-border)",
+        paddingTop: "80px",
+        paddingBottom: "80px",
+      }}
+    >
+      {/* Provider strip, monochrome and quiet, sits above the section content
+          rather than competing with it. Pauses on hover per LogoLoop's API. */}
+      <div style={{ marginBottom: "48px" }}>
+        <LogoLoop
+          logos={integratedBackends}
+          speed={60}
+          direction="left"
+          gap={48}
+          logoHeight={20}
+          fadeOut
+          fadeOutColor="var(--color-bg)"
+          pauseOnHover
+          ariaLabel="Integrated model backends"
+        />
+      </div>
+
+      <div style={{ maxWidth: "1400px", margin: "0 auto", padding: "0 24px" }}>
         {/* Primary result: research.rune */}
-        <div className="grid grid-cols-1 gap-12 md:grid-cols-12">
-          <div className="md:col-span-5">
-            <h2 className="text-3xl font-medium tracking-tight text-[var(--color-ink)]">
-              What validating the linter looks like
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(12, 1fr)", gap: "48px" }}>
+          <div style={{ gridColumn: "span 5" }}>
+            <h2 className="text-heading" style={{ color: "var(--color-ink)" }}>
+              What Validating The Linter Looks Like
             </h2>
-            <p className="mt-4 text-sm leading-relaxed text-[var(--color-ink-muted)]">
-              Cleanest run, 2026-06-17: the research genome against 12
-              tasks, comparing Qwen3-32B (on Groq) against Mistral Small
-              (on Mistral AI&apos;s own infrastructure) &mdash; two
-              different labs, two different cloud providers, zero
-              retries or rate-limit interference. Predicted risk and
-              measured divergence correlated at 0.999.
+            <p
+              className="text-body"
+              style={{ color: "var(--color-ink-muted)", marginTop: "16px" }}
+            >
+              Cleanest run, 2026-06-17: the research genome against 12 tasks,
+              comparing Qwen3-32B (on Groq) against Mistral Small (on Mistral
+              AI's own infrastructure). Two different labs, two different
+              cloud providers, zero retries or rate-limit interference.
+              Predicted risk and measured divergence correlated at 0.999.
             </p>
-            <p className="mt-4 text-xs text-[var(--color-ink-faint)]">
-              Two earlier same-day runs also scored positive: 0.99
-              (Groq vs Cerebras, though Cerebras was rate-limited
-              throughout) and 0.719 (Groq 8B vs Groq 70B, same
-              provider). See docs/roadmap.md for all results in full.
+            <p
+              className="text-caption"
+              style={{ color: "var(--color-ink-faint)", marginTop: "16px" }}
+            >
+              Two earlier same-day runs also scored positive: 0.99 (Groq vs
+              Cerebras, though Cerebras was rate-limited throughout) and
+              0.719 (Groq 8B vs Groq 70B, same provider). See docs/roadmap.md
+              for all results in full.
             </p>
           </div>
 
-          <div className="md:col-span-7">
-            <div className="surface overflow-hidden">
-              <div className="grid grid-cols-[1fr_auto_auto] gap-3 border-b border-[var(--color-border)] px-4 py-3 text-xs text-[var(--color-ink-faint)] sm:gap-4 sm:px-5">
-                <span>Step</span>
-                <span className="w-20 text-right sm:w-28">Predicted</span>
-                <span className="w-20 text-right sm:w-28">Measured</span>
+          <div style={{ gridColumn: "span 7" }}>
+            <div className="surface">
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "1fr auto auto",
+                  gap: "16px",
+                  borderBottom: "1px solid var(--color-border)",
+                  padding: "12px 20px",
+                }}
+                className="text-caption"
+              >
+                <span style={{ color: "var(--color-ink-faint)" }}>STEP</span>
+                <span style={{ color: "var(--color-ink-faint)", width: "112px", textAlign: "right" }}>
+                  PREDICTED
+                </span>
+                <span style={{ color: "var(--color-ink-faint)", width: "112px", textAlign: "right" }}>
+                  MEASURED
+                </span>
               </div>
 
               {researchRows.map((row, i) => (
                 <BarRow key={row.step} row={row} index={i} reduce={!!reduce} />
               ))}
 
-              <div className="border-t border-[var(--color-border)] px-5 py-4">
-                <p className="font-mono-tight text-sm text-[var(--color-ink)]">
-                  correlation = 0.999
+              <div style={{ borderTop: "1px solid var(--color-border)", padding: "16px 20px" }}>
+                <p className="text-body" style={{ fontFamily: "var(--font-mono)", color: "var(--color-ink)" }}>
+                  CORRELATION = 0.999
                 </p>
-                <p className="mt-1 text-xs text-[var(--color-ink-faint)]">
+                <p className="text-caption" style={{ color: "var(--color-ink-faint)", marginTop: "4px" }}>
                   Qwen3-32B (Groq) vs Mistral Small (Mistral AI), 12 tasks,
                   zero rate-limit interference.
                 </p>
@@ -88,35 +139,59 @@ export function CorrelationExample() {
         </div>
 
         {/* Second result: coder.rune, a different genome shape */}
-        <div className="mt-20 grid grid-cols-1 gap-12 md:grid-cols-12">
-          <div className="md:col-span-5">
-            <h3 className="text-xl font-medium tracking-tight text-[var(--color-ink)]">
-              Does it hold up on a different genome shape?
+        <div
+          style={{
+            marginTop: "80px",
+            display: "grid",
+            gridTemplateColumns: "repeat(12, 1fr)",
+            gap: "48px",
+          }}
+        >
+          <div style={{ gridColumn: "span 5" }}>
+            <h3 className="text-subheading" style={{ color: "var(--color-ink)", textTransform: "uppercase" }}>
+              Does It Hold Up On A Different Genome Shape?
             </h3>
-            <p className="mt-4 text-sm leading-relaxed text-[var(--color-ink-muted)]">
-              The results above are all on the research genome (search
-              &rarr; analyze &rarr; summarize). Testing the same backend
-              pairing on a coding genome (analyze &rarr; code &rarr; test
-              &rarr; summarize, no tool steps) first scored a weak 0.152
-              &mdash; a real negative result.
+            <p
+              className="text-body"
+              style={{ color: "var(--color-ink-muted)", marginTop: "16px" }}
+            >
+              The results above are all on the research genome (search,
+              analyze, summarize). Testing the same backend pairing on a
+              coding genome (analyze, code, test, summarize, no tool steps)
+              first scored a weak 0.152, a real negative result.
             </p>
-            <p className="mt-4 text-xs text-[var(--color-ink-faint)]">
+            <p
+              className="text-caption"
+              style={{ color: "var(--color-ink-faint)", marginTop: "16px" }}
+            >
               Investigation found two genuine issues: the word-overlap
-              measurement was penalizing code for having different
-              variable names and formatting even when functionally
-              identical, and the linter didn&apos;t account for
-              &quot;summarize&quot; being more ambiguous after a coding
-              task than after a research task. Fixing both brought the
-              correlation to 0.967 on the same 12 tasks.
+              measurement was penalizing code for having different variable
+              names and formatting even when functionally identical, and the
+              linter did not account for "summarize" being more ambiguous
+              after a coding task than after a research task. Fixing both
+              brought the correlation to 0.967 on the same 12 tasks.
             </p>
           </div>
 
-          <div className="md:col-span-7">
-            <div className="surface overflow-hidden">
-              <div className="grid grid-cols-[1fr_auto_auto] gap-3 border-b border-[var(--color-border)] px-4 py-3 text-xs text-[var(--color-ink-faint)] sm:gap-4 sm:px-5">
-                <span>Step</span>
-                <span className="w-20 text-right sm:w-28">Predicted</span>
-                <span className="w-20 text-right sm:w-28">Measured</span>
+          <div style={{ gridColumn: "span 7" }}>
+            <div className="surface">
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "1fr auto auto",
+                  gap: "16px",
+                  borderBottom: "1px solid var(--color-border)",
+                  padding: "12px 20px",
+                }}
+                className="text-caption"
+              >
+                <span style={{ color: "var(--color-ink-faint)" }}>STEP</span>
+                <span style={{ color: "var(--color-ink-faint)", width: "112px", textAlign: "right" }}>
+                  PREDICTED
+                </span>
+                <span style={{ color: "var(--color-ink-faint)", width: "112px", textAlign: "right" }}>
+                  MEASURED
+                </span>
               </div>
 
               {(() => {
@@ -133,17 +208,15 @@ export function CorrelationExample() {
                 ));
               })()}
 
-              <div className="border-t border-[var(--color-border)] px-5 py-4">
-                <p className="font-mono-tight text-sm text-[var(--color-ink)]">
-                  correlation = 0.967
+              <div style={{ borderTop: "1px solid var(--color-border)", padding: "16px 20px" }}>
+                <p className="text-body" style={{ fontFamily: "var(--font-mono)", color: "var(--color-ink)" }}>
+                  CORRELATION = 0.967
                 </p>
-                <p className="mt-1 text-xs text-[var(--color-ink-faint)]">
+                <p className="text-caption" style={{ color: "var(--color-ink-faint)", marginTop: "4px" }}>
                   After fixing the measurement method and a context-blind
                   scoring gap. Started at 0.152 before investigation. Bar
-                  widths above are scaled per-column to show relative
-                  ranking — predicted (0.4–0.6) and measured (0.11–0.19)
-                  sit on different absolute scales, since correlation
-                  measures whether the order matches, not the magnitude.
+                  widths are scaled per-column to show relative ranking,
+                  predicted and measured sit on different absolute scales.
                 </p>
               </div>
             </div>
@@ -169,37 +242,48 @@ function BarRow({
   const measuredWidth = barWidths ? barWidths.measured : row.measured;
 
   return (
-    <div className="grid grid-cols-[1fr_auto_auto] items-center gap-3 border-b border-[var(--color-border)] px-4 py-4 last:border-b-0 sm:gap-4 sm:px-5">
-      <span className="font-mono-tight text-sm text-[var(--color-ink)]">
+    <div
+      style={{
+        display: "grid",
+        gridTemplateColumns: "1fr auto auto",
+        alignItems: "center",
+        gap: "16px",
+        borderBottom: "1px solid var(--color-border)",
+        padding: "16px 20px",
+      }}
+    >
+      <span className="text-body" style={{ color: "var(--color-ink)", textTransform: "uppercase" }}>
         {row.step}
       </span>
 
-      <div className="flex w-20 items-center justify-end gap-1.5 sm:w-28 sm:gap-2">
-        <div className="h-1.5 w-10 overflow-hidden rounded-full bg-[var(--color-bg-raised-2)] sm:w-16">
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-end", gap: "8px", width: "112px" }}>
+        <div style={{ height: "6px", width: "64px", background: "var(--color-border)", overflow: "hidden" }}>
           <motion.div
-            className="h-full rounded-full bg-[var(--color-accent)]"
+            className="bar-predicted"
+            style={{ height: "100%" }}
             initial={reduce ? false : { width: 0 }}
             whileInView={{ width: `${predictedWidth * 100}%` }}
             viewport={{ once: true, amount: 0.6 }}
             transition={{ duration: 0.7, delay: index * 0.08, ease: [0.16, 1, 0.3, 1] }}
           />
         </div>
-        <span className="font-mono-tight text-xs text-[var(--color-ink-muted)]">
+        <span className="text-caption" style={{ fontFamily: "var(--font-mono)", color: "var(--color-ink-muted)" }}>
           {row.predicted.toFixed(2)}
         </span>
       </div>
 
-      <div className="flex w-20 items-center justify-end gap-1.5 sm:w-28 sm:gap-2">
-        <div className="h-1.5 w-10 overflow-hidden rounded-full bg-[var(--color-bg-raised-2)] sm:w-16">
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-end", gap: "8px", width: "112px" }}>
+        <div style={{ height: "6px", width: "64px", background: "var(--color-border)", overflow: "hidden" }}>
           <motion.div
-            className="h-full rounded-full bg-[var(--color-risk-medium)]"
+            className="bar-measured"
+            style={{ height: "100%" }}
             initial={reduce ? false : { width: 0 }}
             whileInView={{ width: `${measuredWidth * 100}%` }}
             viewport={{ once: true, amount: 0.6 }}
             transition={{ duration: 0.7, delay: index * 0.08 + 0.1, ease: [0.16, 1, 0.3, 1] }}
           />
         </div>
-        <span className="font-mono-tight text-xs text-[var(--color-ink-muted)]">
+        <span className="text-caption" style={{ fontFamily: "var(--font-mono)", color: "var(--color-ink-muted)" }}>
           {row.measured.toFixed(2)}
         </span>
       </div>
