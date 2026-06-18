@@ -339,61 +339,74 @@ export const LogoLoop = memo(function LogoLoop({
 
       const isNodeItem = "node" in item;
 
-      const content = isNodeItem ? (
-        <span
-          className={cx(
-            "inline-flex items-center",
-            "motion-reduce:transition-none",
-            scaleOnHover &&
-              "transition-transform duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] group-hover/item:scale-120"
-          )}
-          aria-hidden={!!item.href && !item.ariaLabel}
-        >
-          {item.node}
-        </span>
-      ) : (
-        <img
-          className={cx(
-            "h-[var(--logoloop-logoHeight)] w-auto block object-contain",
-            "[-webkit-user-drag:none] pointer-events-none",
-            "[image-rendering:-webkit-optimize-contrast]",
-            "motion-reduce:transition-none",
-            scaleOnHover &&
-              "transition-transform duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] group-hover/item:scale-120"
-          )}
-          src={item.src}
-          srcSet={item.srcSet}
-          sizes={item.sizes}
-          width={item.width}
-          height={item.height}
-          alt={item.alt ?? ""}
-          title={item.title}
-          loading="lazy"
-          decoding="async"
-          draggable={false}
-        />
-      );
+      let content: ReactNode;
+      if (isNodeItem) {
+        content = (
+          <span
+            className={cx(
+              "inline-flex items-center",
+              "motion-reduce:transition-none",
+              scaleOnHover &&
+                "transition-transform duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] group-hover/item:scale-120"
+            )}
+            aria-hidden={!!item.href && !item.ariaLabel}
+          >
+            {item.node}
+          </span>
+        );
+      } else {
+        content = (
+          <img
+            className={cx(
+              "h-[var(--logoloop-logoHeight)] w-auto block object-contain",
+              "[-webkit-user-drag:none] pointer-events-none",
+              "[image-rendering:-webkit-optimize-contrast]",
+              "motion-reduce:transition-none",
+              scaleOnHover &&
+                "transition-transform duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] group-hover/item:scale-120"
+            )}
+            src={item.src}
+            srcSet={item.srcSet}
+            sizes={item.sizes}
+            width={item.width}
+            height={item.height}
+            alt={item.alt ?? ""}
+            title={item.title}
+            loading="lazy"
+            decoding="async"
+            draggable={false}
+          />
+        );
+      }
 
-      const itemAriaLabel = isNodeItem ? (item.ariaLabel ?? item.title) : (item.alt ?? item.title);
+      let itemAriaLabel: string | undefined;
+      if (isNodeItem) {
+        itemAriaLabel = item.ariaLabel ?? item.title;
+      } else {
+        itemAriaLabel = item.alt ?? item.title;
+      }
 
-      const inner = item.href ? (
-        
-          className={cx(
-            "inline-flex items-center no-underline rounded",
-            "transition-opacity duration-200 ease-linear",
-            "hover:opacity-80",
-            "focus-visible:outline focus-visible:outline-current focus-visible:outline-offset-2"
-          )}
-          href={item.href}
-          aria-label={itemAriaLabel || "logo link"}
-          target="_blank"
-          rel="noreferrer noopener"
-        >
-          {content}
-        </a>
-      ) : (
-        content
-      );
+      let inner: ReactNode;
+      if (item.href) {
+        inner = (
+          
+            className={cx(
+              "inline-flex items-center no-underline rounded",
+              "transition-opacity duration-200 ease-linear",
+              "hover:opacity-80",
+              "focus-visible:outline focus-visible:outline-current focus-visible:outline-offset-2"
+            )}
+            href={item.href}
+            aria-label={itemAriaLabel || "logo link"}
+            target="_blank"
+            rel="noreferrer noopener"
+          >
+            {content}
+          </a>
+        );
+      } else {
+        inner = content;
+      }
 
       return (
         <li
