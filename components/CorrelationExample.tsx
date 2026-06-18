@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useReducedMotion } from "motion/react";
-import LogoLoop from "./LogoLoop"; // React Bits component, see LogoLoop.jsx for the source
+import LogoLoop from "./LogoLoop"; // React Bits component, see LogoLoop.tsx for the source
 
 const researchRows = [
   { step: "search", predicted: 0.388, measured: 0.823 },
@@ -76,7 +76,7 @@ export function CorrelationExample() {
         {/* Primary result: research.rune */}
         <div style={{ display: "grid", gridTemplateColumns: "repeat(12, 1fr)", gap: "48px" }}>
           <div style={{ gridColumn: "span 5" }}>
-            <h2 className="text-heading" style={{ color: "var(--color-ink)" }}>
+            <h2 className="font-display text-3xl" style={{ color: "var(--color-ink)" }}>
               What Validating The Linter Looks Like
             </h2>
             <p
@@ -148,7 +148,7 @@ export function CorrelationExample() {
           }}
         >
           <div style={{ gridColumn: "span 5" }}>
-            <h3 className="text-subheading" style={{ color: "var(--color-ink)", textTransform: "uppercase" }}>
+            <h3 className="font-display text-xl" style={{ color: "var(--color-ink)" }}>
               Does It Hold Up On A Different Genome Shape?
             </h3>
             <p
